@@ -14,12 +14,12 @@ Estrutuar as pastas do projeto
 <mkdir ./src/app/controllers>
 <mkdir ./src/app/middlewares>
 <mkdir ./src/app/models>
-<touch ./src/app/controllers/SessionController.js>
 <touch ./src/app/middlewares/auth.js>
 <mkdir ./src/config>
 <touch ./src/config/database.js>
 <mkdir ./src/database>
 <mkdir ./src/database/migrations>
+<mkdir ./src/database/seeds>
 
 A partir de agora tudo será feito dentro da pasta do projeto
 
@@ -185,6 +185,15 @@ Para ideficar os bancos que o sequelize suporta, acessar o link: https://sequeli
 Caso o bd escolhido seja o postgres é necessário instalar as seguintes dependencias
 <yarn add pg pg-hstore>
 
+Instalar a dependencia bcryptjs
+<yarn add bcryptjs>
+
+Instalar o JWT Json Web Token
+<yarn add jsonwebtoken>
+
+Instalar o yup, uma biblioteca de validação de dados
+<yarn add yup>
+
 # Configuração container do postgres no Docker
 
 IP: 192.168.99.103
@@ -203,3 +212,41 @@ module.exports = {
         underscoredAll: true,
     },
 };
+
+# Criar o arquivo src/database/index.js
+<touch ./src/database/index.js>
+
+Codificar o arquivo index.js tendo como base o projeto modulo02
+
+# Migration Users e Recipient
+
+Criar os arquivos migration das tabelas users e recipients
+<yarn sequelize migration:create --name=create-users>
+<yarn sequelize migration:create --name=create-recipients>
+
+Configurar os arquivos conforme as especificações da RocketSeat
+
+Gerar o migrate para a criação das tabelas
+<yarn sequelize db:migrate>
+
+# Seed Admin-user
+Criar o seed do admin-user
+<yarn sequelize seed:generate --name admin-user>
+
+# Criar os Models User e Recipient
+<touch ./src/app/models/User.js>
+<touch ./src/app/models/Recipient.js>
+
+# Criar os Controllers SessionController, UserController e RecipientController
+<touch ./src/app/controllers/SessionController.js>
+<touch ./src/app/controllers/UserController.js>
+<touch ./src/app/controllers/RecipientController.js>
+
+Codificar os models User e Recipient tendo como base os models criados no projeto modelo02
+Codificar os controllers SessionController, UserController e RecipientController tendo como base os controllers criados no projeto modelo02
+
+# Criar as rotas
+
+As rotas que exigem autenticação é necessário informar o token adquirido na criação da sessão
+
+Configurar o Insominia para Bearer Token, informar o token e manter a opção enabled selecionada
