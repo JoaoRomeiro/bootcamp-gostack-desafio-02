@@ -1,8 +1,25 @@
 # bootcamp-gostack-desafio-02
 Desafio do segundo módulo do Bootcamp GoStack
 
+# Configuração do ambiente de desenvolvimento
 Criar pasta do projeto
 <mkdir desafio02>
+
+Estrutuar as pastas do projeto
+<mkdir ./src/>
+<touch ./src/app.js>
+<touch ./src/server.js>
+<touch ./src/routes.js>
+<mkdir ./src/app>
+<mkdir ./src/app/controllers>
+<mkdir ./src/app/middlewares>
+<mkdir ./src/app/models>
+<touch ./src/app/controllers/SessionController.js>
+<touch ./src/app/middlewares/auth.js>
+<mkdir ./src/config>
+<touch ./src/config/database.js>
+<mkdir ./src/database>
+<mkdir ./src/database/migrations>
 
 A partir de agora tudo será feito dentro da pasta do projeto
 
@@ -28,7 +45,7 @@ Instalar o express, que é o framework que será utilizado no projeto
 
 Instalar o Nodemon e o Sucrase como dependencia de desenvolvimento
 - Sucrase permite utilizar a sintaxe mais moderna do JavaScript
-- Nodemon monitora as alterações no servidor e o reinicializa de forma automática 
+- Nodemon monitora as alterações no servidor e o reinicializa de forma automática
 <yarn add sucrase nodemon -D>
 
 Criar o arquivo nodemon.json
@@ -61,8 +78,122 @@ Dentro do arquivo launch.json realizar as seguintes alterações:
 Instalar o ESLint como dependência de desenvolvimento
 <yarn add eslint -D>
 
-Estrutuar as pastas do projeto
-<mkdir ./src/>
-<touch ./src/app.js>
-<touch ./src/server.js>
-<touch ./src/routes.js>
+Inicializar o eslint
+<yarn eslint --init>
+
+- To check syntax, find problems, and enforce code style
+- JavaScript modules (import/export)
+- None of these
+- Does your project use TypeScript? (y/N) N
+- Desmarcar Browse e marcar Node
+- Use a popular style guide
+- Airbnb: https://github.com/airbnb/javascript
+- JavaScript
+
+Excluir o arquivo package-lock.json
+<rm package-lock.json>
+
+Rodar o yarn para remapear as dependências no arquivo yarn.lock
+<yarn>
+
+Instar a extensão ESLint
+
+Editar o arquivo settings.json e adicionar a seguinte configuração
+"eslint.enable": true,
+"eslint.packageManager": "yarn",
+"eslint.validate": [
+    "vue",
+    "html",
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact"
+],
+"[javascript]": {
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+    }
+},
+"[javascriptreact]": {
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+    }
+},
+"files.eol":"\n",
+
+Editar o arquivo .eslintrc.js e adicionar as seguintes regras
+"class-methods-use-this": "off",
+"no-param-reassign": "off",
+"camelcase": "off",
+"no-unused-vars": ["error", {"argsIgnorePattern": "next"}]
+
+Instalar o prettier
+<yarn add prettier eslint-config-prettier eslint-plugin-prettier -D>
+
+Editar o arquivo .eslintrc e realizar as seguintes alterações:
+- Alterar a propriedade extends para extends: ['airbnb-base', 'prettier' ]
+- Adicionar uma nova propriedade plugins: ['prettier']
+- Adicionar um rules "prettier/prettier": "error",
+
+Criar um arquivo .prettierrc
+<touch .prettierrc>
+
+Adicionar as excessões de validações que o prettier deve ignorar
+{
+    "singleQuote": true,
+    "trailingComma": "es5"
+}
+
+Corrigir todos os problemas que o ESLint identificar sem a necessidade de entrar arquivo por aquivo
+<yarn eslint --fix nome_da_pasta --ext .tipo_da_extensao>
+<yarn eslint --fix src --ext .js>
+
+Instalar a extensão EditorConfig for VS Code
+
+Através do VS Code, ir até a raiz do projeto, clicar com o botão direito e selecionar Generate .editorconfig
+
+Editar o arquivo .editorconfig e redefinir as seguintes propriedades:
+- trim_trailing_whitespace = true
+- insert_final_newline = true
+
+Instalar o sequelize
+<yarn add sequelize>
+
+Instalar o sequelize-cli como dependencia de desenvolvimento
+Essa dependencia permite utilizar o prompt de comando para executar comandos, como por exemplo, migrations, criar models e etc.
+<yarn add sequelize-cli -D>
+
+Criar um arquivo .sequelizerc que definirá os caminhos até os arquivos e pastas do nosso projeto
+<touch .sequelizerc>
+
+Verificar a versão do sequelize
+<yarn sequelize --version>
+
+Editar o arquivo .sequelizerc e adicionar os seguintes paramentros
+const { resolve } = require('path');
+
+module.exports = {
+    config: resolve(__dirname, 'src', 'config', 'database.js'),
+    'models-path': resolve(__dirname, 'src', 'app', 'models'),
+    'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
+    'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
+}
+
+Editar o arquivo config/database.js e adicionar as credenciais de conexão com o banco de dados
+module.exports = {
+    dialect: 'postgres',
+    host: '',
+    username: '',
+    password: '',
+    database: '',
+    define: {
+        timestamps: true,
+        underscored: true,
+        underscoredAll: true,
+    },
+};
+
+Para ideficar os bancos que o sequelize suporta, acessar o link: https://sequelize.org/v5/manual/dialects.html
+
+Caso o bd escolhido seja o postgres é necessário instalar as seguintes dependencias
+<yarn add pg pg-hstore>
