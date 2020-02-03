@@ -81,6 +81,7 @@ Instalar o ESLint como dependência de desenvolvimento
 Inicializar o eslint
 <yarn eslint --init>
 
+Selecionar as seguintes opções
 - To check syntax, find problems, and enforce code style
 - JavaScript modules (import/export)
 - None of these
@@ -93,10 +94,10 @@ Inicializar o eslint
 Excluir o arquivo package-lock.json
 <rm package-lock.json>
 
-Rodar o yarn para remapear as dependências no arquivo yarn.lock
+Rodar o yarn para re-mapear as dependências no arquivo yarn.lock
 <yarn>
 
-Instar a extensão ESLint
+Instalar a extensão ESLint através do VS Code
 
 Editar o arquivo settings.json e adicionar a seguinte configuração
 "eslint.enable": true,
@@ -179,21 +180,26 @@ module.exports = {
     'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
 }
 
+Para ideficar os bancos que o sequelize suporta, acessar o link: https://sequelize.org/v5/manual/dialects.html
+
+Caso o bd escolhido seja o postgres é necessário instalar as seguintes dependencias
+<yarn add pg pg-hstore>
+
+# Configuração container do postgres no Docker
+
+IP: 192.168.99.103
+<docker run --name fastfeet -e POSTGRES_PASSWORD=docker -p 5433:5432 -d postgres>
+
 Editar o arquivo config/database.js e adicionar as credenciais de conexão com o banco de dados
 module.exports = {
     dialect: 'postgres',
-    host: '',
-    username: '',
-    password: '',
-    database: '',
+    host: '192.168.99.103',
+    username: 'postgres',
+    password: 'docker',
+    database: 'fastfeet',
     define: {
         timestamps: true,
         underscored: true,
         underscoredAll: true,
     },
 };
-
-Para ideficar os bancos que o sequelize suporta, acessar o link: https://sequelize.org/v5/manual/dialects.html
-
-Caso o bd escolhido seja o postgres é necessário instalar as seguintes dependencias
-<yarn add pg pg-hstore>
